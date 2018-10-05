@@ -1,6 +1,44 @@
 <html>
 
 <script src="./gpu.js"></script>
-<script src="./index.js"></script>
+
+<body>
+
+    <script>
+        console.log("test gpu.js");
+
+        const gpu = new GPU();
+
+        console.log(gpu);
+
+        const opt = {
+            output: {
+                x: 100
+            }
+        };
+
+        const myFunc = gpu.createKernel(function () {
+            return this.thread.x;
+        }, opt);
+
+        out = myFunc();
+
+        console.log(out);
+
+
+        const render = gpu.createKernel(function () {
+                this.color(this.thread.x / 500, this.thread.y / 500, 0.4, 1.0);
+            })
+            .setOutput([500, 500])
+            .setGraphical(true);
+
+
+
+        render();
+        const canvas = render.getCanvas();
+        document.getElementsByTagName('body')[0].appendChild(canvas);
+    </script>
+
+</body>
 
 </html>
